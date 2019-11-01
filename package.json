@@ -1,0 +1,23 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "bamazon app that allows customers to \"buy\" items from the bamazon database",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matt-wilson78/bamazon.git"
+  },
+  "author": "matt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matt-wilson78/bamazon/issues"
+  },
+  "homepage": "https://github.com/matt-wilson78/bamazon#readme",
+  "dependencies": {
+    "inquirer": "^7.0.0",
+    "mysql": "^2.17.1"
+  }
+}
