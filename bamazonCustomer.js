@@ -36,30 +36,34 @@ function buyProduct() {
             type: "number",
             message: "How many would you like to purchase?"
         }]).then(function (answers) {
-            console.log(answers.item)
             var selectedItem;
             for (var i = 0; i < results.length; i++) {
-                //console.log(results[i]);
                 if (results[i].item_id === answers.item) {
                     selectedItem = results[i];
-                    console.log(selectedItem);
                 }
             }
             if (answers.amount > selectedItem.stock_quantity) {
                 console.log("We're sorry, we don't have enough " + selectedItem.product_name + " in stock to complete your order");
-                start();
+                inquirer.prompt([{
+                    name: "continue",
+                    type: "confirm",
+                    message: "Would you like to choose a different amount or make another purchase?"
+                }]).then(function (ans) {
+                    if (ans.continue === true) {
+                        console.clear();
+                        start();
+                    } else {
+                        console.log("\nThank you for shopping Bamazon!\n")
+                    }
+                })
             } else {
-                var currentStock = selectedItem.stock_quantity;
-                console.log("currentStock: " +
-                    currentStock);
-                var unitsSold = answers.amount;
-                console.log("unitsSols: " + unitsSold)
-                var productSold = selectedItem.item_id;
-                console.log("productSold: " + productSold);
+                // var currentStock = selectedItem.stock_quantity;
+                // var unitsSold = answers.amount;
+                // var productSold = selectedItem.item_id;
                 var totalPrice = answers.amount * selectedItem.price;
                 console.log("Your total cost for your order of: \n" +
                     answers.amount + " units of " + selectedItem.product_name + " is: " + totalPrice + "\n");
-                //updateAmount();
+                updateAmount(selectedItem.stock_quantity, answers.amount, selectedItem.item_id);
                 restartPurchase();
             }
         })
@@ -74,6 +78,7 @@ function restartPurchase() {
         message: "Would you like to make another purchase?"
     }]).then(function (answer) {
         if (answer.newPurchase === true) {
+            console.clear();
             start();
         } else {
             console.log("Thank you for shopping with Bamazon!");
@@ -82,17 +87,15 @@ function restartPurchase() {
 }
 
 
-// //Function to update the amount of product in database when an item is sold
-// function updateAmount(currentStock, unitsSold, productSold) {
-//     console.log("currentStock getting passed? " + currentStock);
-//     newStock = currentStock - unitsSold;
-//     console.log(newStock);
-//     // connection.query("UPDATE products SET ? WHERE ?",
-//     //     [{
-//     //             stock_quantity: newStock
-//     //         },
-//     //         {
-//     //             item_id: productSold
-//     //         }
-//     //     ])
-// }
+//Function to update the amount of product in database when an item is sold
+function updateAmount(currentStock, unitsSold, productSold) {
+    newStock = currentStock - unitsSold;
+    connection.query("UPDATE products SET ? WHERE ?",
+        [{
+                stock_quantity: newStock
+            },
+            {
+                item_id: productSold
+            }
+        ])
+}
