@@ -57,11 +57,8 @@ function buyProduct() {
                     }
                 })
             } else {
-                // var currentStock = selectedItem.stock_quantity;
-                // var unitsSold = answers.amount;
-                // var productSold = selectedItem.item_id;
                 var totalPrice = answers.amount * selectedItem.price;
-                console.log("Your total cost for your order of: \n" +
+                console.log("The total cost for your order of: \n" +
                     answers.amount + " units of " + selectedItem.product_name + " is: " + totalPrice + "\n");
                 updateAmount(selectedItem.stock_quantity, answers.amount, selectedItem.item_id);
                 restartPurchase();
